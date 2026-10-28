@@ -1,0 +1,481 @@
+/* =============================================
+   LOJA VIRTUAL - ETEC João Belarmino
+   Tema: Azul e Branco
+   ============================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+    color: #1a1a2e;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url(../fontes/Roboto-VariableFont_wdth,wght.ttf);
+}
+
+body {
+    background-color: #eef2f7;
+    min-height: 100vh;
+}
+
+/* ── HEADER / NAVBAR ── */
+header {
+    background: linear-gradient(135deg, #0d47a1 0%, #1565c0 60%, #1976d2 100%);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+    box-shadow: 0 4px 12px rgba(13, 71, 161, 0.4);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+
+header .logo span {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+header .logo .badge {
+    background: #fff;
+    color: #0d47a1;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+}
+
+header nav a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    margin-left: 28px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+header nav a:hover {
+    color: #fff;
+}
+
+/* ── BANNER ── */
+.banner {
+    background: linear-gradient(120deg, #0d47a1 0%, #1565c0 40%, #0077b6 100%);
+    color: white;
+    padding: 60px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.banner::before {
+    content: "";
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 300px;
+    height: 300px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+}
+
+.banner::after {
+    content: "";
+    position: absolute;
+    bottom: -80px;
+    left: -40px;
+    width: 250px;
+    height: 250px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+}
+
+.banner h1 {
+    font-size: 42px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 12px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    position: relative;
+    z-index: 1;
+}
+
+.banner p {
+    font-size: 17px;
+    color: rgba(255,255,255,0.88);
+    max-width: 600px;
+    margin: 0 auto 24px;
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+}
+
+.banner .banner-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.35);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 30px;
+    letter-spacing: 0.5px;
+    position: relative;
+    z-index: 1;
+}
+.banner .banner-badge:hover {
+    background: rgba(255,255,255,0.25);
+    border-color: rgba(255,255,255,0.5);
+}
+
+/* ── SEÇÃO DE PRODUTOS ── */
+.section-title {
+    text-align: center;
+    padding: 40px 20px 16px;
+    font-size: 26px;
+    font-weight: 700;
+    color: #0d47a1;
+    letter-spacing: 0.3px;
+}
+
+.section-title span {
+    display: block;
+    width: 50px;
+    height: 4px;
+    background: #1976d2;
+    border-radius: 4px;
+    margin: 8px auto 0;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 28px;
+    padding: 20px 40px 60px;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+/* ── CARD ── */
+.card {
+    background-color: #ffffff;
+    width: 280px;
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    border: 1px solid #d0dff5;
+    box-shadow: 0 4px 18px rgba(13, 71, 161, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(13, 71, 161, 0.22);
+}
+
+.card .card-img-wrap {
+    width: 100%;
+    height: 190px;
+    overflow: hidden;
+    background: #e8f0fe;
+}
+
+.card .card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.card:hover .card-img-wrap img {
+    transform: scale(1.07);
+}
+
+.card .card-body {
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.card .nome {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0d47a1;
+    margin-bottom: 4px;
+}
+
+.card .nota {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.card .preco {
+    font-size: 26px;
+    font-weight: 800;
+    color: #0d47a1;
+    margin: 4px 0;
+}
+
+.card .preco_parc {
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 12px;
+    line-height: 1.5;
+    flex: 1;
+}
+
+.card button {
+    background: linear-gradient(135deg, #1565c0, #1976d2);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: background 0.3s, transform 0.15s;
+    width: 100%;
+}
+
+.card button:hover {
+    background: linear-gradient(135deg, #0d47a1, #1565c0);
+    transform: scale(1.02);
+}
+
+/* ── FOOTER ── */
+footer {
+    background: #0d47a1;
+    color: rgba(255,255,255,0.75);
+    text-align: center;
+    padding: 20px;
+    font-size: 13px;
+}
+
+footer strong {
+    color: #fff;
+}
+
+/* ==========================================
+   PÁGINA DE DETALHE DO PRODUTO
+   ========================================== */
+.detalhe-wrapper {
+    max-width: 960px;
+    margin: 40px auto;
+    padding: 0 24px 60px;
+}
+
+.breadcrumb {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 24px;
+}
+
+.breadcrumb a {
+    color: #1565c0;
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.detalhe-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #d0dff5;
+    box-shadow: 0 6px 24px rgba(13, 71, 161, 0.1);
+    overflow: hidden;
+    display: flex;
+    gap: 0;
+}
+
+.detalhe-img {
+    width: 45%;
+    min-height: 380px;
+    background: #e8f0fe;
+    overflow: hidden;
+}
+
+.detalhe-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.detalhe-info {
+    width: 55%;
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.detalhe-info h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #0d47a1;
+}
+
+.detalhe-info .nota {
+    font-size: 15px;
+    color: #666;
+}
+
+.detalhe-info .descricao {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.7;
+    border-left: 4px solid #1976d2;
+    padding-left: 14px;
+    margin: 6px 0;
+}
+
+.detalhe-info .preco-grande {
+    font-size: 36px;
+    font-weight: 900;
+    color: #0d47a1;
+    margin: 4px 0;
+}
+
+.detalhe-info .avista {
+    font-size: 13px;
+    color: #1565c0;
+    font-weight: 600;
+    background: #e8f0fe;
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+/* ── TABELA DE PARCELAMENTO ── */
+.parc-section {
+    margin-top: 36px;
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid #d0dff5;
+    box-shadow: 0 4px 16px rgba(13, 71, 161, 0.08);
+    overflow: hidden;
+}
+
+.parc-section h2 {
+    background: linear-gradient(135deg, #0d47a1, #1565c0);
+    color: #fff;
+    font-size: 17px;
+    padding: 16px 24px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.parc-tabs {
+    display: flex;
+    border-bottom: 2px solid #d0dff5;
+}
+
+.parc-tab {
+    flex: 1;
+    padding: 12px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #555;
+    background: #f4f8ff;
+    cursor: default;
+    letter-spacing: 0.2px;
+}
+
+.parc-tab.sj { border-right: 1px solid #d0dff5; color: #1565c0; }
+.parc-tab.cj { color: #b71c1c; }
+
+table.parc-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+table.parc-table th {
+    background: #e8f0fe;
+    color: #0d47a1;
+    font-weight: 700;
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid #d0dff5;
+}
+
+table.parc-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid #eef2f7;
+    color: #333;
+}
+
+table.parc-table tr:last-child td { border-bottom: none; }
+table.parc-table tr:nth-child(even) td { background: #f9fbff; }
+
+.tag-sj {
+    display: inline-block;
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.tag-cj {
+    display: inline-block;
+    background: #fdecea;
+    color: #c62828;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.btn-voltar {
+    display: inline-block;
+    margin-top: 28px;
+    background: linear-gradient(135deg, #1565c0, #1976d2);
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.btn-voltar:hover {
+    background: linear-gradient(135deg, #0d47a1, #1565c0);
+    transition: background 0.3s, transform 0.15s;
+    transform: scale(1.02);
+}
+
+/* ── RESPONSIVO ── */
+@media (max-width: 700px) {
+    .detalhe-card { flex-direction: column; }
+    .detalhe-img, .detalhe-info { width: 100%; }
+    .banner h1 { font-size: 28px; }
+    .container { padding: 16px; gap: 20px; }
+    header { padding: 0 16px; }
+    header nav { display: none; }
+}
