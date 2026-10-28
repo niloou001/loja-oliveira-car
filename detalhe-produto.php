@@ -1,143 +1,24 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>Detalhe do Produto - AutoLoja ETEC</title>
-</head>
-<body>
-
-    <!-- HEADER -->
-    <header>
-        <a class="logo" href="index.php">
-            <span>Loja Oliveira</span>
-            <span class="badge">ETEC</span>
-        </a>
-        <nav>
-            <a href="index.php">Início</a>
-
-        </nav>
-    </header>
-
-    <?php
-        require_once("data/produtos.php");
-        require_once("php/Produto.php");
-
-  
-        $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-
-
-        if (!isset($produtos[$id])) {
-            echo '<div class="detalhe-wrapper"><p>Produto não encontrado. <a href="index.php">Voltar</a></p></div>';
-            exit;
-        }
-
-        $p = $produtos[$id];
-    ?>
-
-    <div class="detalhe-wrapper">
-
-
-        <p class="breadcrumb">
-            <a href="index.php">🏠 Início</a> › <?= htmlspecialchars($p['nome']); ?>
-        </p>
-
-
-        <div class="detalhe-card">
-            <div class="detalhe-img">
-                <img src="<?= htmlspecialchars($p['imagem']); ?>" alt="<?= htmlspecialchars($p['nome']); ?>">
-            </div>
-            <div class="detalhe-info">
-                <h1><?= htmlspecialchars($p['nome']); ?></h1>
-
-                <p class="descricao"><?= htmlspecialchars($p['descricao']); ?></p>
-
-                <p class="preco-grande"><?= formatarValor($p['valor']); ?></p>
-                <span class="avista">💳 Pagamento à vista</span>
-
-                <p style="font-size:13px; color:#555; margin-top:8px;">
-                    Sem juros: até <strong><?= $p['parcelamento_max_sj']; ?>x</strong> de
-                    <strong><?= calcularParcelaSemJuros($p['valor'], $p['parcelamento_max_sj']); ?></strong>
-                </p>
-                <p style="font-size:13px; color:#555;">
-                    Com juros: até <strong><?= $p['parcelamento_max_cj']; ?>x</strong> ·
-                    Taxa: <strong><?= number_format($p['juros'], 2, ',', '.'); ?>% a.m.</strong>
-                </p>
-            </div>
-        </div>
-
-        <!-- TABELA DE PARCELAMENTO (Juros Simples) -->
-        <div class="parc-section" style="margin-top: 36px;">
-            <h2>💳 Tabela de Parcelamento</h2>
-
-            <div class="parc-tabs">
-                <div class="parc-tab sj">✅ Sem Juros</div>
-                <div class="parc-tab cj">⚠️ Com Juros (Simples · <?= number_format($p['juros'], 2, ',', '.'); ?>% a.m.)</div>
-            </div>
-
-            <table class="parc-table">
-                <thead>
-                    <tr>
-                        <th>Parcelas</th>
-                        <th>Valor por parcela</th>
-                        <th>Total pago</th>
-                        <th>Tipo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    // --- Parcelamentos SEM juros ---
-                    // Exibe opções: 1x, 2x, 3x ... até parc_max_sj
-                    for ($n = 1; $n <= $p['parcelamento_max_sj']; $n++):
-                        $parcela = calcularParcelaSemJuros($p['valor'], $n);
-                        $total   = formatarValor($p['valor']);
-                    ?>
-                    <tr>
-                        <td><strong><?= $n; ?>x</strong></td>
-                        <td><?= $parcela; ?></td>
-                        <td><?= $total; ?></td>
-                        <td><span class="tag-sj">Sem juros</span></td>
-                    </tr>
-                    <?php endfor; ?>
-
-                    <?php
-                    // --- Parcelamentos COM juros (Juros Simples: J = P × i × n) ---
-                    // Começa logo após o limite sem juros
-                    $inicio_cj = $p['parcelamento_max_sj'] + 1;
-                    for ($n = $inicio_cj; $n <= $p['parcelamento_max_cj']; $n++):
-                        $parcela = calcularParcelaComJuros($p['valor'], $p['juros'], $n);
-                        $total   = calcularTotalComJuros($p['valor'], $p['juros'], $n);
-                    ?>
-                    <tr>
-                        <td><strong><?= $n; ?>x</strong></td>
-                        <td><?= $parcela; ?></td>
-                        <td><?= $total; ?></td>
-                        <td><span class="tag-cj">Com juros</span></td>
-                    </tr>
-                    <?php endfor; ?>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Nota sobre Juros Simples -->
-        <div style="margin-top:20px; padding:16px 20px; background:#e8f0fe; border-left:4px solid #1565c0; border-radius:8px; font-size:13px; color:#333; line-height:1.8;">
-            <strong style="color:#0d47a1;">📌 Como calculamos o parcelamento com juros?</strong><br>
-            Utilizamos <strong>Juros Simples</strong>: <em>J = P × i × n</em><br>
-            Onde: <em>P</em> = valor do produto · <em>i</em> = taxa mensal (<?= number_format($p['juros'], 2, ',', '.'); ?>%) · <em>n</em> = número de parcelas<br>
-            O total pago é <em>T = P + J</em>, dividido pelo número de parcelas.
-            <br><a href="https://brasilescola.uol.com.br/matematica/juros-simples.htm" target="_blank" style="color:#1565c0;">📚 Saiba mais sobre juros simples</a>
-        </div>
-
-        <a href="index.php" class="btn-voltar">← Voltar para a Loja</a>
-
-    </div>
-
-    <!-- FOOTER -->
-    <footer>
-        <p><strong>Loja Oliveira ETEC</strong> — Projeto Loja Virtual · ETEC João Belarmino</p>
-    </footer>
-
-</body>
-</html>
+<?php
+require_once __DIR__ . '/data/produtos.php';
+require_once __DIR__ . '/php/Layout.php';
+$id = filter_var($_GET['id'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+$p = $id !== false && $id !== null ? ($produtos[$id] ?? null) : null;
+if (!$p) {
+    http_response_code(404); cabecalho('Veículo não encontrado', 'Explore os veículos do catálogo Oliveira Car.');
+    echo '<main id="conteudo" class="wrap empty-state"><h1>Veículo não encontrado</h1><p>Este veículo não está no catálogo. Veja os modelos disponíveis.</p><a class="button button-dark" href="index.php#estoque">Voltar ao catálogo</a></main>';
+    rodape(); return;
+}
+cabecalho($p['nome'], $p['descricao']);
+$contato = contatoVeiculo($p);
+?>
+<main id="conteudo" class="wrap detail-page">
+<nav class="breadcrumb" aria-label="Localização"><a href="index.php">Início</a><span>/</span><a href="index.php#estoque">Veículos</a><span>/</span><span aria-current="page"><?= h($p['nome']) ?></span></nav>
+<div class="detail-grid"><section class="detail-photo" aria-label="Foto do veículo"><img src="<?= h($p['imagem']) ?>" alt="<?= h($p['nome']) ?>" width="900" height="700" data-car-image><span class="photo-caption">Imagem ilustrativa</span></section>
+<section class="detail-summary"><p class="eyebrow"><?= h($p['marca']) ?> <span class="status-text">· <?= $p['status'] === 'reservado' ? 'Reservado' : 'No catálogo' ?></span></p><h1><?= h($p['nome']) ?></h1><p class="detail-description"><?= h($p['descricao']) ?></p><div class="detail-price"><span>Valor à vista</span><strong><?= formatarValor($p['valor']) ?></strong><p>ou até <?= $p['parcelamento_max_sj'] ?>x de <?= calcularParcelaSemJuros($p['valor'], $p['parcelamento_max_sj']) ?> sem juros*</p></div>
+<?php if ($contato): ?><a class="button button-orange" href="<?= h($contato) ?>" target="_blank" rel="noopener noreferrer">Tenho interesse · WhatsApp <span class="arrow" aria-hidden="true"></span></a><?php endif; ?>
+<button class="button <?= $contato ? 'button-outline' : 'button-dark' ?>" type="button" data-favorite="<?= $id ?>" data-label="<?= h($p['nome']) ?>" data-favorite-text aria-pressed="false">♡ Salvar nos favoritos</button><button class="text-button" type="button" id="share-vehicle">Copiar link deste veículo <span class="arrow" aria-hidden="true"></span></button><p class="small-print">Confirme os valores, as condições e a disponibilidade antes da compra.</p></section></div>
+<section class="simulator" aria-labelledby="sim-title" data-simulator data-value="<?= h($p['valor']) ?>" data-interest="<?= h($p['juros']) ?>" data-free="<?= $p['parcelamento_max_sj'] ?>"><div class="simulation-heading"><p class="eyebrow">PLANEJE COM TRANQUILIDADE</p><h2 id="sim-title">Faça as contas do seu próximo passo.</h2><p>Escolha uma entrada e veja uma estimativa das parcelas.</p></div><div class="simulation-body"><div class="simulation-controls"><label for="down-payment">Entrada (R$)</label><input id="down-payment" type="number" value="0" min="0" max="<?= h($p['valor']) ?>" step="0.01" inputmode="decimal" aria-describedby="payment-error"><p id="payment-error" class="input-error" role="alert" hidden>Informe uma entrada entre zero e o valor do veículo.</p><label for="months">Número de parcelas</label><select id="months"><?php for ($n = 1; $n <= $p['parcelamento_max_cj']; $n++): ?><option value="<?= $n ?>" <?= $n === $p['parcelamento_max_sj'] ? 'selected' : '' ?>><?= $n ?>x <?= $n <= $p['parcelamento_max_sj'] ? 'sem juros' : 'com juros simples' ?></option><?php endfor; ?></select></div><div class="simulation-result" aria-live="polite" aria-atomic="true"><span id="payment-label"><?= $p['parcelamento_max_sj'] ?> parcelas de</span><strong id="payment-value"><?= calcularParcelaSemJuros($p['valor'], $p['parcelamento_max_sj']) ?></strong><span id="payment-interest">Sem juros</span><div><span>Total estimado, com entrada</span><b id="payment-total"><?= formatarValor($p['valor']) ?></b></div></div></div><p class="simulation-disclaimer">* Simulação ilustrativa com juros simples. Até <?= $p['parcelamento_max_sj'] ?> parcelas sem juros; acima disso, taxa de <?= number_format($p['juros'], 2, ',', '.') ?>% ao mês sobre o saldo. Não inclui tarifas, impostos, seguros nem análise de crédito. As condições reais devem ser confirmadas com a loja.</p><noscript><p class="notice">Ative o JavaScript para recalcular a simulação. A estimativa exibida considera entrada zero.</p></noscript></section>
+<details class="payment-details"><summary>Ver todas as opções sem entrada <span aria-hidden="true">＋</span></summary><div class="table-scroll" role="region" aria-label="Tabela de parcelas" tabindex="0"><table><caption>Simulação ilustrativa para <?= h($p['nome']) ?>, sem entrada</caption><thead><tr><th scope="col">Parcelas</th><th scope="col">Valor por parcela</th><th scope="col">Total estimado</th><th scope="col">Condição</th></tr></thead><tbody><?php for ($n = 1; $n <= $p['parcelamento_max_cj']; $n++): $semJuros = $n <= $p['parcelamento_max_sj']; ?><tr><th scope="row"><?= $n ?>x</th><td><?= $semJuros ? calcularParcelaSemJuros($p['valor'], $n) : calcularParcelaComJuros($p['valor'], $p['juros'], $n) ?></td><td><?= $semJuros ? formatarValor($p['valor']) : calcularTotalComJuros($p['valor'], $p['juros'], $n) ?></td><td><?= $semJuros ? 'Sem juros' : 'Juros simples' ?></td></tr><?php endfor; ?></tbody></table></div></details>
+<a class="back-link" href="index.php#estoque"><span class="arrow arrow-back" aria-hidden="true"></span> Continuar explorando veículos</a>
+</main>
+<?php rodape(); ?>

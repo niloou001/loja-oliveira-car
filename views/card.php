@@ -1,17 +1,4 @@
-<a class="card" href="detalhe-produto.php?id=<?= $indice; ?>">
-    <div class="card-img-wrap">
-        <img src="<?= htmlspecialchars($produto['imagem']); ?>" alt="<?= htmlspecialchars($produto['nome']); ?>">
-    </div>
-    <div class="card-body">
-        <p class="nome"><?= htmlspecialchars($produto['nome']); ?></p>
-
-        <p class="preco"><?= formatarValor($produto['valor']); ?></p>
-
-        <p class="preco_parc">
-            Em até <?= $produto['parcelamento_max_sj']; ?>x de
-            <?= calcularParcelaSemJuros($produto['valor'], $produto['parcelamento_max_sj']); ?> sem juros
-        </p>
-
-        <button>Ver detalhes</button>
-    </div>
-</a>
+<article class="vehicle-card" data-vehicle data-id="<?= $indice ?>" data-name="<?= h($produto['nome']) ?>" data-brand="<?= h($produto['marca']) ?>" data-price="<?= h($produto['valor']) ?>">
+<div class="card-media"><a href="detalhe-produto.php?id=<?= $indice ?>" tabindex="-1" aria-hidden="true"><img src="<?= h($produto['imagem']) ?>" alt="" loading="lazy" width="640" height="420" data-car-image></a><span class="status-badge <?= $produto['status'] === 'reservado' ? 'reserved' : '' ?>"><?= $produto['status'] === 'reservado' ? 'Reservado' : 'No catálogo' ?></span><button class="favorite-button" type="button" data-favorite="<?= $indice ?>" data-label="<?= h($produto['nome']) ?>" aria-pressed="false" aria-label="Salvar <?= h($produto['nome']) ?> nos favoritos">♡</button></div>
+<div class="card-content"><p class="card-brand"><?= h($produto['marca']) ?></p><h3><a href="detalhe-produto.php?id=<?= $indice ?>"><?= h($produto['nome']) ?></a></h3><p class="card-description"><?= h($produto['descricao']) ?></p><div class="card-price"><small>Valor à vista</small><strong><?= formatarValor($produto['valor']) ?></strong><span>ou <?= $produto['parcelamento_max_sj'] ?>x de <?= calcularParcelaSemJuros($produto['valor'], $produto['parcelamento_max_sj']) ?> sem juros*</span></div><a class="card-link" href="detalhe-produto.php?id=<?= $indice ?>">Conhecer veículo <span class="arrow" aria-hidden="true"></span></a></div>
+</article>

@@ -1,0 +1,6 @@
+/dist/
+*.sqlite
+*.sqlite-*
+*.db
+/.env
+/node_modules/
